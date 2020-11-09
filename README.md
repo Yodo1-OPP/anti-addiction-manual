@@ -13,8 +13,8 @@ After the game is integrated with our SDK, be sure to implement the following co
 - Game play time limit
 - Game payment limit
 
-
-
+<br />
+<br />
 
 
 ## ****Integration Guide****
@@ -25,10 +25,6 @@ We have made plug-in packages on various platforms for all kinds of developers
 - Android Lib
 - iOS Lib
 
-
-
-
----
 
 ### Unity Plugin
 **Current version:**
@@ -49,13 +45,14 @@ and newer versions
 
 
 **Download plugin:**
-Copy this code below and paste into commandline to get the latest build (0.9.2)
+<br />
+Copy this code below and paste into commandline to get the latest build `0.9.2`
 ```bash
 curl -L "https://yodo1-generic.pkg.coding.net/anti-indulged-system-SDK/unity-plugin/Yodo1AntiIndulgedSDK?version=0.9.2" -o Yodo1AntiIndulgedSDK-0.9.2.unitypackage
 ```
 
 
-#### Access instructions:
+#### **Access instructions:**
 Plug-in structure
 ![structure.jpg](./images/plugin_structure.jpg)
 <br />
@@ -76,32 +73,32 @@ Yodo1AntiIndulgedSDK/User/Resources/Yodo1U3dSettings.asset
 After accessing the plug-in, call the relevant code in the function of object 'Awake' during project initialization:
 ```csharp
 /// <summary>
-/// Return initialization result callback(返回初始化结果回调).
+/// Return initialization result callback.
 /// </summary>
 /// <param name="result">
-///    <see value="true">Initialization successful(初始化成功).</see>
-///    <see value="false">Initialization failed(初始化失败).</see>
+///    <see value="true">Initialization successful.</see>
+///    <see value="false">Initialization failed.</see>
 /// </param>
-/// <param name="content">Information content when initialization fails(初始化失败时的信息内容).</param>
+/// <param name="content">Information content when initialization fails.</param>
 public delegate void InitDelegate(bool result, string content);
 
 
 private void Awake()
 {
-    // Set SDK initialization callback(设置sdk初始化回调).
-	Yodo1U3dAntiIndulged.SetInitCallBack((bool result, string content) =>
+    // Set SDK initialization callback.
+    Yodo1U3dAntiIndulged.SetInitCallBack((bool result, string content) =>
     {
         if (result)
         {
-            // Initialization successful(初始化成功).
+            // Initialization successful.
             // TODO do the success flow and game begin.
         }
         else
         {
-             // Initialization failed(初始化失败).
+             // Initialization failed.
              // TODO do the fail flow, e.g. show the popup message to user. 
-		}
-		Debug.LogFormat("result = {0}, content = {1}", result, content);
+        }
+        Debug.LogFormat("result = {0}, content = {1}", result, content);
     });
 }
     
@@ -117,27 +114,27 @@ Users can enter the game and begin to experience the game content only after pa
 ```csharp
 public void OnClickStartGameButton()
 {
-    // Certification authentication(实名认证).
+    // real name authentication.
     Yodo1U3dAntiIndulged.VerifyCertificationInfo(accountIdInputFiled.text, (Yodo1U3dEventAction eventAction) => {
         Debug.LogFormat("action = {0}", eventAction);
         bool isGuestUser = false;
         if (eventAction == Yodo1U3dEventAction.ResumeGame)
         {
-            //Both successful real name authentication and Guest can continue to play(实名认证成功和游客都可以继续游戏).
+            //Guest mode or a successful real name authentication will enable you to resume playing the game.
 
-            //Check whether it is a Guest(查询是否是试玩).
+            //Check whether it is a guest.
             isGuestUser = Yodo1U3dAntiIndulged.IsGuestUser();
             Debug.LogFormat("IsGuestUser = {0}", Yodo1U3dAntiIndulged.IsGuestUser());
         }
         else if(eventAction == Yodo1U3dEventAction.EndGame)
         {
             //Real name authentication failure prompt and exit the game(实名认证失败提示并退出游戏).
-            Dialog.ShowMsgDialog("Warm prompt(温馨提示)", "Real name authentication failed(实名认证失败)!", true, () => {
+            Dialog.ShowMsgDialog("Warm prompt", "Real name authentication failed!", true, () => {
                 Application.Quit();
             });
 
         }
-	});
+    });
 }
 ```
 
@@ -176,10 +173,10 @@ public delegate void TimeLimitNotifyDelegate(Yodo1U3dEventAction eventAction, in
 /// <param name="timeLimitNotifyCallBack">Remaining time notification callback(剩余时间通知回调).</param>
 Yodo1U3dAntiIndulged.SetTimeLimitNotifyCallBack((Yodo1U3dEventAction action, string title, string content) =>
 {
-	Debug.LogFormat("action = {0}, title = {1}, content = {2}", action, title, content);
+    Debug.LogFormat("action = {0}, title = {1}, content = {2}", action, title, content);
     if(action == Yodo1U3dEventAction.ResumeGame)
     {
-        // Prompt when 10 minutes remain(剩余10分钟时提示).
+        // Prompt when 10 minutes remain.
         // TODO Warning user it's few time left for playing. 
     }
     else if (action == Yodo1U3dEventAction.EndGame)
@@ -214,17 +211,17 @@ At the same time, developers have to call the SDK's amount reporting interface
 /// <param name="content">Notice content that needs to be displayed in the game when it is not available for purchase(不可购买时的需要游戏展示的通知内容).</param>
 public delegate void VerifyPurchaseDelegate(bool isAllow, string content);
 
- //如果价格单位使用的分请使用分单位接口
+ //please use the RMB fen interface, if the price unit is RMB fen.
 /// <summary>
-/// Verify consumption is restricted(验证是否已限制消费，分单位接口).
+/// Verify whether consumption is restricted, using cent RMB interface.
 /// </summary>
 /// <param name="priceCent">The price of the commodity, in cent(商品的价格，单位为分).</param>
 /// <param name="currency">Corresponding currency symbol(对应货币符号，从产品信息里取).</param>
 Yodo1U3dAntiIndulged.VerifyPurchase(priceCent, currency,  (bool isAllow, string context) => {
-	Debug.LogFormat("hasLimit = {0}, context = {1}", isAllow, context);
+    Debug.LogFormat("hasLimit = {0}, context = {1}", isAllow, context);
     if (isAllow)
     {
-        //Can buy, execute purchase process(可购买，执行购买流程).
+        //can be purchased, execute the purchase process.
         Purchase("com.yodo1.stampede.offer1", price, currency);
     }
     else
@@ -234,22 +231,22 @@ Yodo1U3dAntiIndulged.VerifyPurchase(priceCent, currency,  (bool isAllow, string 
     }
 });
 
-//如果价格单位使用的元请使用元单位接口
+//please use the RMB yuan interface, if the price unit is RMB yuan
 /// <summary>
-/// Verify consumption is restricted(验证是否已限制消费，元单位接口).
+/// Verify whether consumption is restricted. RMB yuan interface.
 /// </summary>
 /// <param name="priceYuan">The price of the commodity, in yuan(商品的价格，单位为元).</param>
 /// <param name="currency">Corresponding currency symbol(对应货币符号,商品信息里获得).</param>
 public static void VerifyPurchaseYuan(priceYuan, currency,  (bool isAllow, string context) => {
-	Debug.LogFormat("hasLimit = {0}, context = {1}", isAllow, context);
+    Debug.LogFormat("hasLimit = {0}, context = {1}", isAllow, context);
     if (isAllow)
     {
-        //Can buy, execute purchase process(可购买，执行购买流程).
+        //can be purchased, execute the purchase process.
         Purchase("com.yodo1.stampede.offer1", price, currency);
     }
     else
     {
-        //Can't buy prompt player(不可以购买并提示玩家).
+        //cannot be purchased and prompt the player.
         Dialog.ShowMsgDialog("Warm prompt(温馨提示)", content);
     }
 })
@@ -258,31 +255,28 @@ public static void VerifyPurchaseYuan(priceYuan, currency,  (bool isAllow, strin
 
 #### Report consumption information
 ```csharp
-
 /// <summary>
-/// Submit the product info to SDK when game purchase has been success.(支付成功后将订单信息上报给SDK).
+/// Submit the product info to SDK when game purchase has been success.
 /// </summary>
 void OnPurchaseSuccess(ProductInfo info)
 {
     string productId = info.productId;  // com.yodo1.sample.item1
-    //单位元价格
+    //Price. Unit is RMB yuan
     double priceYuan = (double)info.price * 0.01;  // 6.99
     
-    //单位分价格
+    //Price. Unit is RMB fen
     double priceCent = info.price;
     string currency = info.currency;   // CNY
     string orderId = info.orderId; // 1000000345744346
     // After purchase has been success.
     // It should pass the actual product information to the SDK to record the cumulative amount paid by users.
-    //如果价格单位使用的分请使用分单位接口
+    //Please use the RMB fen interface, if the price unit is RMB fen.
     Yodo1U3dAntiIndulged.ReportProductReceipt(productId, Yodo1U3dProductType.Consumables, priceCent, currency, orderId);
-    //如果价格单位使用的元请使用元单位接口
+    //Please use the RMB yuan interface, if the price unit is RMB yuan.
     Yodo1U3dAntiIndulged.ReportProductReceiptYuan(productId, Yodo1U3dProductType.Consumables, priceYuan, currency, orderId);
 }
-
 ```
 
----
 
 ### Android Plugin
 **Current version:**
@@ -294,11 +288,11 @@ If the game has been connected to the anti-addiction service of Yodo1SDK before,
 #### Project configuration
 If your game does not need  access to any other Yodo1 SDK and  Yodo1 package service, you need to add the following tags to the AndroidManifest.xml of the game project:
 ```xml
-<!-- name值固定不变，value的值随着需要发布的渠道变化(具体的值请联系运营人员) -->
+<!-- The name value is fixed, and the value changes with the channel to be released (please contact the operation personnel for the specific value). -->
 <meta-data
-	android:name="Yodo1ChannelCode"
-	android:value="Yodo1"
-	tools:replace="android:value" />
+  android:name="Yodo1ChannelCode"
+  android:value="Yodo1"
+  tools:replace="android:value" />
 ```
 
 
@@ -309,40 +303,41 @@ The game needs to initialize anti-addiction in ‘Activity onCreate’. Please n
 The Appkey used in the parameter is issued when the game is registered in the background of yodo1. Please contact the operator for details.
 ```java
 /*
-	参数1：Activity的实体
-  参数2：Yodo1下发的Appkey
-  参数3：接收防沉迷系统回调的监听器
+  parameter 1：Activity entity
+  parameter 2：Appkey issued by Yodo1
+  parameter 3：Receives the listener for the anti-addiction system callback
 */
 Yodo1AntiIndulged.init(activity, appkey, new Yodo1AntiIndulgedListener() {
-				/**
-         * 初始化完成后会触发该回调方法，游戏需要等到该方法返回成功后再操作其他的防沉迷接口
-         * @param result 是否成功
-         * @param message 错误信息
-         */
-        @Override
-        public void onInitFinish(boolean result, String message) {
-            YLog.i(TAG + "onInitFinish, result = " + result + ", message = " + message);
-            isInit = result;
-        }
+    /**
+        * This callback method is triggered when initialization is complete, and the game needs to wait until this method returns successfully before operating the other anti-addiction interfaces
+        * @param result: success or failure
+        * @param message:  error information
+        */
+    @Override
+    public void onInitFinish(boolean result, String message) {
+        YLog.i(TAG + "onInitFinish, result = " + result + ", message = " + message);
+        isInit = result;
+    }
 
-        /**
-         * 当玩家剩余时间不足时，通过该回调给到游戏通知。
-         * @param event   通知实体
-         * @param title   需要游戏展示的通知标题
-         * @param content 需要游戏展示的通知内容
-         */
-        @Override
-        public void onTimeLimitNotify(Yodo1AntiIndulgedEvent event, String title, String content) {
-            YLog.i(TAG + "onTimeLimitNotify, eventCode = " + event.getEventCode() + ", action = " + event.getAction().toString() + ", title = " + title + ", content = " + content);
-            Toast.makeText(MainActivity.this, content, Toast.LENGTH_LONG).show();
-            // 当action的值为EndGame时，需要结束游戏。否则为ResumeGame时，只给玩家即将到时的提醒，然后游戏继续即可。
-            if (event.getAction() == Yodo1AntiIndulgedEvent.EventAction.EndGame) {
-                YLog.e(TAG + "onTimeLimitNotify, 游戏结束");
-            } else {
-                YLog.i(TAG + "onTimeLimitNotify, 只提醒玩家即将到时，游戏继续运行");
-            }
+    /**
+        * This callback is used to inform the game when the player is running short of time.
+        * @param event   notification entity
+        * @param title   Notification titles that require game to display
+        * @param content Notification contents that require game to display
+        */
+    @Override
+    public void onTimeLimitNotify(Yodo1AntiIndulgedEvent event, String title, String content) {
+        YLog.i(TAG + "onTimeLimitNotify, eventCode = " + event.getEventCode() + ", action = " + event.getAction().toString() + ", title = " + title + ", content = " + content);
+        Toast.makeText(MainActivity.this, content, Toast.LENGTH_LONG).show();
+        // When the value of action is EndGame, end the game. When it is ResumeGame, the player will only be reminded of the coming time, and then the game will continue.
+        if (event.getAction() == Yodo1AntiIndulgedEvent.EventAction.EndGame) {
+            YLog.e(TAG + "onTimeLimitNotify, 游戏结束");
+        } else {
+            YLog.i(TAG + "onTimeLimitNotify, 只提醒玩家即将到时，游戏继续运行");
         }
-    });
+    }
+});
+
 ```
 
 
@@ -355,8 +350,8 @@ If the game does not have the account function, you can also use the device num
 Players must have a network connection before they can pass the real-name verification. Without network connection, players can only play for a short time through the trial entrance.
 ```java
 /*
-	参数1：当前运行的Activity
-  参数2：游戏产生或第三方账号系统产生的账号ID，如果游戏没有账号体系，可传入设备号替代。
+  parameter 1：the currently running activity
+  parameter 2：Account ID generated by game or third-party account system. If the game does not have an account system, it can be replaced by the device number.。
 */
 Yodo1AntiIndulged.verifyCertificationInfo(activity, accountId, new Yodo1CertificationCallback() {
         @Override
@@ -371,7 +366,7 @@ Yodo1AntiIndulged.verifyCertificationInfo(activity, accountId, new Yodo1Certific
         }
         changeView();
         }
-		});
+    });
 ```
 
 
@@ -383,43 +378,43 @@ The developer only needs to pay attention to the onTimeLimitNotify callback met
 This method is described as follows:
 ```java
 /**
-  * 对游戏进行剩余时间通知时触发的函数
+  * Function that is triggered when the game is notified of the amount of time remaining
   *
-  * 当游戏收到回调后，需要弹出对话框来告知玩家（对话框的展示内容请使用回调返回的title及content），
-  * 并在玩家确认完对话框内容后通过getAction()的值来进行后续的动作（结束或继续游戏）
+  * When the game receives a callback, a dialog box will pop up to inform the player（Please use the title and content returned by the callback to display the contents of the dialog），
+  * After the player has confirmed the content of the dialog box, the value of getAction() is used to carry out subsequent actions (end or resume the game).
   *
-  * @param event   通知实体
-  * @param title   需要游戏展示的通知标题
-  * @param content 需要游戏展示的通知内容
+  * @param event   Notification entity
+  * @param title   Notification titles that require game to display
+  * @param content Notification contents that require game presentation
   */
 void onTimeLimitNotify(Yodo1AntiIndulgedEvent event, String title, String content);
 
 class Yodo1AntiIndulgedEvent {
-    // 收到通知后，接入者通过getAction()来判断需要进行的动作，ResumeGame为可以继续游戏，EndGame为结束游戏
+    // After receiving the notification, the developer determines the action to be taken through getAction(). ResumeGame means continuing the game, and EndGame means ending the game
     EventAction getAction();
-    // (选择使用)接入者可以通过getEventCode()来判断出当前通知是由什么事件触发的，参数值见下方
+    //  (optional)Developers can determine what event has triggered the current notification with getEventCode(). See the parameters below:
     int getEventCode();
 }
 
 public static class EventCode {
     /**
-    * 玩家为未成年人时，即将或已经到达今日时长的通知
+    * Notification for a minor that he is about to or has reached today's time limit
     */
     public static final int EVENT_NOTIFY_MINOR_PLAYED_TIME = 11001;
     /**
-    * 玩家为未成年人时，即将或已经到达禁玩时段的通知
+    * Notification for a minor that he is about to or has reached today's playtime ban
     */
     public static final int EVENT_NOTIFY_MINOR_FORBIDDEN_TIME = 12001;
     /**
-    * 试玩模式下，即将或已经到达今日时长的通知
+    * Notification for a guest that he is about to or has reached today's time limit
     */
     public static final int EVENT_NOTIFY_GUEST_PLAYED_TIME = 11011;
     /**
-    * 试玩模式下，即将或已经到达禁玩时段的通知
+    *  Notification for a guest that he is about to or has reached today's playtime ban
     */
     public static final int EVENT_NOTIFY_GUEST_FORBIDDEN_TIME = 12011;
     /**
-    * 第三方渠道SDK产生的事件
+    * Events generated by the third-party channel SDK
     */
     public static final int EVENT_NOTIFY_THIRD_CHANNEL_UNKNOW_EVENT = 50005;
 }
@@ -431,30 +426,30 @@ public static class EventCode {
 When a player makes a purchase, the developer needs to call the payment interface to determine whether the player has reached the upper limit of the payment amount.
 ```java
 /*
-	参数1: 玩家要购买的商品价格，单位为分
-  参数2: 货币符号，设置为"CNY"
+  Parameter 1: The price of the item the player wants to buy,玩家要购买的商品价格，单位为分
+  Parameter 2: Currency, set as "; CNY"
 */
 Yodo1AntiIndulged.verifyPurchase(price, currency, new Yodo1VerifyPurchaseCallback() {
         @Override
         public void onResult(boolean isAllow, String message) {
         YLog.d(TAG + "purchase , isAllow = " + isAllow + ", message = " + message);
         if (isAllow) {
-        		// 允许购买，继续进行购买操作
+            // Allow the purchase, pls proceed to buy 
         }
 });
 ```
 Finally, after the purchase is successful and the product has been distributed to the player, developer needs to call the reporting interface to notify the SDK to record the player's expenses this time:
 ```java
 /*
-	orderId: 订单号。如果接入Yodo1支付系统则由支付回调返回，否则由游戏自己产生。
+  orderId: 订单号。如果接入Yodo1支付系统则由支付回调返回，否则由游戏自己产生。
   itemCode: 商品编号
   itemType: 商品类型，见下方
   price: 商品价格，单位为分
   
 */
 Yodo1ProductReceipt receipt = new Yodo1ProductReceipt(
-				orderId,
-       	itemCode,
+        orderId,
+        itemCode,
         itemType,
         price,
         currency);
@@ -462,10 +457,10 @@ Yodo1AntiIndulged.reportProductReceipt(receipt);
 
 
 public enum ItemType {
-				NonConsumables("非消耗品", 0),
+        NonConsumables("非消耗品", 0),
         Consumables("消耗品", 1), 
         AutoSubscription("订阅商品", 2);
-}	
+} 
 ```
 
 
@@ -498,8 +493,8 @@ The game needs to be in Perform anti-addiction initialization in the didFinishLa
 The Appkey used in the parameter is issued when the game is registered in the background of yodo1. Please contact the operator for details.
 ```objectivec
 /*
-  参数1：Yodo1下发的Appkey
-  参数2：接收防沉迷系统回调的delegate
+  Parameter 1：Appkey issued by Yodo1
+  Parameter 2：Delegate that receives the callback from the anti-addiction system 
 */
 - (void)init:(NSString *)appKey delegate: (id<Yodo1AntiIndulgedDelegate>)delegate;
 
@@ -520,10 +515,10 @@ The accountID used in the real-name verification interface is generated by the 
 If the game does not have the account function, you can also enter the device number as a temporary replacement.
 Players must have a network connection before they can pass the real-name verification. Without network connection, players can only play for a short time through the trial entrance.
 ```objectivec
-/// 验证玩家实名信息
-/// accountId 玩家账号
-/// success 实名认证成功回调
-/// failure 实名认证失败回调
+/// Verify the player's real name information
+/// player's accountId 
+/// successful real-name authentication callbacks 
+/// failed real-name authentication callbacks 
 - (void)verifyCertificationInfo:(NSString *)accountId success:(Yodo1AntiIndulgedSuccessful)success failure:(Yodo1AntiIndulgedFailure)failure;
 
 #pragma mark - Yodo1AntiIndulgedSuccessful
@@ -540,11 +535,11 @@ This function is automatically run by Yodo1 anti-addiction SDK, and no additiona
 The developer only needs to pay attention to the onTimeLimitNotify callback method in the Yodo1AntiIndulgedDelegate agent passed in during initialization. The SDK uses this method to inform the developer what to do.
 This method is described as follows:
 ```objectivec
-/// 验证玩家实名信息
-/// 当游戏收到回调后，需要弹出对话框来告知玩家（对话框的展示内容请使用回调返回的title及message），并在玩家确认完对话框内容后通过event.action的值来进行后续的动作（结束或继续游戏）
-/// event   通知实体
-/// title   需要游戏展示的通知标题
-/// content 需要游戏展示的通知内容
+/// Verify the player's real name information
+/// When the game receives a callback, a dialog box will pop up to inform the player(Please use the title and message returned by the callback to display the dialog). After the player confirms the content of the dialog box, the value of event.action is used to carry out subsequent actions（end or resume the game）
+/// notification entity that games needs to display  
+/// notification title  that games needs to display
+/// notification content that games needs to display
 - (BOOL)onTimeLimitNotify:(Yodo1AntiIndulgedEvent *)event title:(NSString *)title message:(NSString *)message;
 
 #pragma mark - Yodo1AntiIndulgedEvent
@@ -565,19 +560,19 @@ typedef enum: NSInteger {
 typedef enum: NSInteger {
     Yodo1AntiIndulgedEventCodeNone = 0,
     /**
-     * 对于已玩时间的通知-未成年人
+     *Notification of playtime - Minors
      */
     Yodo1AntiIndulgedEventCodeMinorPlayedTime = 11001,
     /**
-     * 对于禁玩时段的通知-未成年人
+     *Notification of playtime ban - Minors
      */
     Yodo1AntiIndulgedEventCodeMinorForbiddenTime = 12001,
     /**
-     * 对于已玩时间的通知-游客
+     * Notification of playtime - Guests
      */
     Yodo1AntiIndulgedEventCodeGuestPlayedTime = 11011,
     /**
-     * 对于禁玩时段的通知-游客
+     * Notification of playtime ban - Guests
      */
     Yodo1AntiIndulgedEventCodeGuestForbiddenTime = 12011
 } Yodo1AntiIndulgedEventCode;
@@ -587,29 +582,29 @@ typedef enum: NSInteger {
 #### Payment amount restrictions and Reporting (mandatory)
 When a player makes a purchase, the user needs to call the payment interface to determine whether the player has reached the upper limit of the payment amount.
 ```objectivec
-/// 验证玩家是否已被限制消费
-/// money: 玩家要购买的商品价格，单位为分
-/// success 消费验证成功回调
-/// failure 消费验证失败回调
+/// Verify whether the player has been restricted from spending
+/// The price of the item the player wants to buy,  Unit:分
+/// a successful consumption verification callback  
+/// a failed consumption verification callback 
 - (void)verifyPurchase:(NSInteger)money success:(Yodo1AntiIndulgedSuccessful)success failure:(Yodo1AntiIndulgedFailure)failure;
 ```
 Finally, after the game is purchased successfully and the product has been distributed to the player, the developer needs to call the reporting interface to notify the SDK to record the player's expenses this time:
 ```objectivec
-/// 上报消费信息
-/// receipt 小票及商品信息组
-/// success 消费上报成功回调
-/// failure 消费上报失败回调
+/// Report consumption information
+/// receipt and merchandise information section
+/// a successful report for consumption  callback 
+/// a failed report for consumption callback 
 - (void)reportProductReceipt:(Yodo1AntiIndulgedProductReceipt *)receipt success:(Yodo1AntiIndulgedSuccessful)success failure:(Yodo1AntiIndulgedFailure)failure;
 
-//小票及商品信息组
+//Receipt and Merchandise Information section
 @interface Yodo1AntiIndulgedProductReceipt : NSObject
-@property (nonatomic, retain) NSString *orderId; // 订单编号
-@property (nonatomic, retain) NSString *itemCode; // 商品编号
-@property (nonatomic, assign) Yodo1AntiIndulgedProductType itemType; // 商品类型
-@property (nonatomic, assign) NSInteger money; // 金额 单位分
-@property (nonatomic, retain) NSString *region; // 区
-@property (nonatomic, retain) NSString *spendDate; // 消费时间
-@property (nonatomic, retain) NSString *currency; // 币种（大写） ,示例值(CNY)
+@property (nonatomic, retain) NSString *orderId; // order no.
+@property (nonatomic, retain) NSString *itemCode; // product id
+@property (nonatomic, assign) Yodo1AntiIndulgedProductType itemType; // product type
+@property (nonatomic, assign) NSInteger money; // money   Unit:cents
+@property (nonatomic, retain) NSString *region; // region
+@property (nonatomic, retain) NSString *spendDate; // when to spend
+@property (nonatomic, retain) NSString *currency; // Currency(capital letters)
 @end
 ```
 
