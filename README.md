@@ -48,7 +48,7 @@ and newer versions
 <br />
 Copy this code below and paste into commandline to get the latest build `0.9.2`
 ```bash
-curl -L "https://yodo1-generic.pkg.coding.net/anti-indulged-system-SDK/unity-plugin/Yodo1AntiIndulgedSDK?version=0.9.2" -o Yodo1AntiIndulgedSDK-0.9.2.unitypackage
+curl -L "https://yodo1-generic.pkg.coding.net/anti-indulged-system-SDK/unity-plugin/Yodo1AntiAddictionSDK?version=0.9.2" -o Yodo1AntiAddictionSDK-0.9.2.unitypackage
 ```
 
 
@@ -64,7 +64,7 @@ Enter the AppKey in the SDK configuration object (the AppKey of the application 
  
 Configuration object path Please reference plug-in structure diagram:
 ```
-Yodo1AntiIndulgedSDK/User/Resources/Yodo1U3dSettings.asset
+Yodo1AntiAddictionSDK/User/Resources/Yodo1U3dSettings.asset
 ```
 ![image1.png](./images/image1.png)
 
@@ -86,7 +86,7 @@ public delegate void InitDelegate(bool result, string content);
 private void Awake()
 {
     // Set SDK initialization callback.
-    Yodo1U3dAntiIndulged.SetInitCallBack((bool result, string content) =>
+    Yodo1U3dAntiAddiction.SetInitCallBack((bool result, string content) =>
     {
         if (result)
         {
@@ -115,7 +115,7 @@ Users can enter the game and begin to experience the game content only after pa
 public void OnClickStartGameButton()
 {
     // real name authentication.
-    Yodo1U3dAntiIndulged.VerifyCertificationInfo(accountIdInputFiled.text, (Yodo1U3dEventAction eventAction) => {
+    Yodo1U3dAntiAddiction.VerifyCertificationInfo(accountIdInputFiled.text, (Yodo1U3dEventAction eventAction) => {
         Debug.LogFormat("action = {0}", eventAction);
         bool isGuestUser = false;
         if (eventAction == Yodo1U3dEventAction.ResumeGame)
@@ -123,8 +123,8 @@ public void OnClickStartGameButton()
             //Guest mode or a successful real name authentication will enable you to resume playing the game.
 
             //Check whether it is a guest.
-            isGuestUser = Yodo1U3dAntiIndulged.IsGuestUser();
-            Debug.LogFormat("IsGuestUser = {0}", Yodo1U3dAntiIndulged.IsGuestUser());
+            isGuestUser = Yodo1U3dAntiAddiction.IsGuestUser();
+            Debug.LogFormat("IsGuestUser = {0}", Yodo1U3dAntiAddiction.IsGuestUser());
         }
         else if(eventAction == Yodo1U3dEventAction.EndGame)
         {
@@ -171,7 +171,7 @@ public delegate void TimeLimitNotifyDelegate(Yodo1U3dEventAction eventAction, in
 /// Set remaining time notification callback(设置剩余时间通知回调).
 /// </summary>
 /// <param name="timeLimitNotifyCallBack">Remaining time notification callback(剩余时间通知回调).</param>
-Yodo1U3dAntiIndulged.SetTimeLimitNotifyCallBack((Yodo1U3dEventAction action, string title, string content) =>
+Yodo1U3dAntiAddiction.SetTimeLimitNotifyCallBack((Yodo1U3dEventAction action, string title, string content) =>
 {
     Debug.LogFormat("action = {0}, title = {1}, content = {2}", action, title, content);
     if(action == Yodo1U3dEventAction.ResumeGame)
@@ -217,7 +217,7 @@ public delegate void VerifyPurchaseDelegate(bool isAllow, string content);
 /// </summary>
 /// <param name="priceCent">The price of the commodity, in cent(商品的价格，单位为分).</param>
 /// <param name="currency">Corresponding currency symbol(对应货币符号，从产品信息里取).</param>
-Yodo1U3dAntiIndulged.VerifyPurchase(priceCent, currency,  (bool isAllow, string context) => {
+Yodo1U3dAntiAddiction.VerifyPurchase(priceCent, currency,  (bool isAllow, string context) => {
     Debug.LogFormat("hasLimit = {0}, context = {1}", isAllow, context);
     if (isAllow)
     {
@@ -271,9 +271,9 @@ void OnPurchaseSuccess(ProductInfo info)
     // After purchase has been success.
     // It should pass the actual product information to the SDK to record the cumulative amount paid by users.
     //Please use the RMB fen interface, if the price unit is RMB fen.
-    Yodo1U3dAntiIndulged.ReportProductReceipt(productId, Yodo1U3dProductType.Consumables, priceCent, currency, orderId);
+    Yodo1U3dAntiAddiction.ReportProductReceipt(productId, Yodo1U3dProductType.Consumables, priceCent, currency, orderId);
     //Please use the RMB yuan interface, if the price unit is RMB yuan.
-    Yodo1U3dAntiIndulged.ReportProductReceiptYuan(productId, Yodo1U3dProductType.Consumables, priceYuan, currency, orderId);
+    Yodo1U3dAntiAddiction.ReportProductReceiptYuan(productId, Yodo1U3dProductType.Consumables, priceYuan, currency, orderId);
 }
 ```
 
@@ -298,7 +298,7 @@ If your game does not need  access to any other Yodo1 SDK and  Yodo1 package s
 
 #### Anti-addiction SDK initialization (mandatory)
 
-The game needs to initialize anti-addiction in ‘Activity onCreate’. Please note that initialization is asynchronous. Make sure to call other anti-addiction interfaces after the onInitFinish() callback method in Yodo1AntiIndulgedListener is triggered, otherwise, an exception occurs.
+The game needs to initialize anti-addiction in ‘Activity onCreate’. Please note that initialization is asynchronous. Make sure to call other anti-addiction interfaces after the onInitFinish() callback method in Yodo1AntiAddictionListener is triggered, otherwise, an exception occurs.
  
 The Appkey used in the parameter is issued when the game is registered in the background of yodo1. Please contact the operator for details.
 ```java
@@ -307,7 +307,7 @@ The Appkey used in the parameter is issued when the game is registered in the ba
   parameter 2：Appkey issued by Yodo1
   parameter 3：Receives the listener for the anti-addiction system callback
 */
-Yodo1AntiIndulged.init(activity, appkey, new Yodo1AntiIndulgedListener() {
+Yodo1AntiAddiction.init(activity, appkey, new Yodo1AntiAddictionListener() {
     /**
         * This callback method is triggered when initialization is complete, and the game needs to wait until this method returns successfully before operating the other anti-addiction interfaces
         * @param result: success or failure
@@ -326,11 +326,11 @@ Yodo1AntiIndulged.init(activity, appkey, new Yodo1AntiIndulgedListener() {
         * @param content Notification contents that require game to display
         */
     @Override
-    public void onTimeLimitNotify(Yodo1AntiIndulgedEvent event, String title, String content) {
+    public void onTimeLimitNotify(Yodo1AntiAddictionEvent event, String title, String content) {
         YLog.i(TAG + "onTimeLimitNotify, eventCode = " + event.getEventCode() + ", action = " + event.getAction().toString() + ", title = " + title + ", content = " + content);
         Toast.makeText(MainActivity.this, content, Toast.LENGTH_LONG).show();
         // When the value of action is EndGame, end the game. When it is ResumeGame, the player will only be reminded of the coming time, and then the game will continue.
-        if (event.getAction() == Yodo1AntiIndulgedEvent.EventAction.EndGame) {
+        if (event.getAction() == Yodo1AntiAddictionEvent.EventAction.EndGame) {
             YLog.e(TAG + "onTimeLimitNotify, 游戏结束");
         } else {
             YLog.i(TAG + "onTimeLimitNotify, 只提醒玩家即将到时，游戏继续运行");
@@ -353,11 +353,11 @@ Players must have a network connection before they can pass the real-name verif
   parameter 1：the currently running activity
   parameter 2：Account ID generated by game or third-party account system. If the game does not have an account system, it can be replaced by the device number.。
 */
-Yodo1AntiIndulged.verifyCertificationInfo(activity, accountId, new Yodo1CertificationCallback() {
+Yodo1AntiAddiction.verifyCertificationInfo(activity, accountId, new Yodo1CertificationCallback() {
         @Override
-        public void onResult(Yodo1AntiIndulgedEvent.EventAction action) {
+        public void onResult(Yodo1AntiAddictionEvent.EventAction action) {
         YLog.i(TAG + "verifyCertificationInfo callback, action = " + action.name());
-        if (action == Yodo1AntiIndulgedEvent.EventAction.EndGame) {
+        if (action == Yodo1AntiAddictionEvent.EventAction.EndGame) {
         isCertification = false;
         MainActivity.this.finish();
         } else {
@@ -374,7 +374,7 @@ Yodo1AntiIndulged.verifyCertificationInfo(activity, accountId, new Yodo1Certific
 
 After a player passes real-name verification and is authenticated as a minor (or enters the game through the trial button),Yodo1 anti-addiction system will limit the player's play time.
 This function is automatically run by Yodo1 anti-addiction SDK, and no additional access is required.
-The developer only needs to pay attention to the onTimeLimitNotify callback method in the Yodo1AntiIndulgedListener listener passed in during initialization. The SDK uses this method to inform the developer what to do.
+The developer only needs to pay attention to the onTimeLimitNotify callback method in the Yodo1AntiAddictionListener listener passed in during initialization. The SDK uses this method to inform the developer what to do.
 This method is described as follows:
 ```java
 /**
@@ -387,9 +387,9 @@ This method is described as follows:
   * @param title   Notification titles that require game to display
   * @param content Notification contents that require game presentation
   */
-void onTimeLimitNotify(Yodo1AntiIndulgedEvent event, String title, String content);
+void onTimeLimitNotify(Yodo1AntiAddictionEvent event, String title, String content);
 
-class Yodo1AntiIndulgedEvent {
+class Yodo1AntiAddictionEvent {
     // After receiving the notification, the developer determines the action to be taken through getAction(). ResumeGame means continuing the game, and EndGame means ending the game
     EventAction getAction();
     //  (optional)Developers can determine what event has triggered the current notification with getEventCode(). See the parameters below:
@@ -429,7 +429,7 @@ When a player makes a purchase, the developer needs to call the payment interfac
   Parameter 1: The price of the item the player wants to buy,玩家要购买的商品价格，单位为分
   Parameter 2: Currency, set as "; CNY"
 */
-Yodo1AntiIndulged.verifyPurchase(price, currency, new Yodo1VerifyPurchaseCallback() {
+Yodo1AntiAddiction.verifyPurchase(price, currency, new Yodo1VerifyPurchaseCallback() {
         @Override
         public void onResult(boolean isAllow, String message) {
         YLog.d(TAG + "purchase , isAllow = " + isAllow + ", message = " + message);
@@ -453,7 +453,7 @@ Yodo1ProductReceipt receipt = new Yodo1ProductReceipt(
         itemType,
         price,
         currency);
-Yodo1AntiIndulged.reportProductReceipt(receipt);
+Yodo1AntiAddiction.reportProductReceipt(receipt);
 
 
 public enum ItemType {
@@ -480,7 +480,7 @@ platform :ios, '9.0'
 source 'https://github.com/Yodo1Sdk/Yodo1Spec.git'
 source 'https://github.com/CocoaPods/Specs.git'
 target 'yodo1-anti-indulged-ios' do
-    pod 'Yodo1AntiIndulged', '2.0.0.1'
+    pod 'Yodo1AntiAddiction', '2.0.0.1'
 end
 
 ```
@@ -488,7 +488,7 @@ end
 
 #### Anti-addiction SDK initialization (mandatory)
 
-The game needs to be in Perform anti-addiction initialization in the didFinishLaunchingWithOptions method. Note that initialization is asynchronous. Wait until the onInitFinish callback method in Yodo1AntiIndulgedDelegate is triggered before calling other anti-addiction interfaces. Otherwise, an exception will occur.
+The game needs to be in Perform anti-addiction initialization in the didFinishLaunchingWithOptions method. Note that initialization is asynchronous. Wait until the onInitFinish callback method in Yodo1AntiAddictionDelegate is triggered before calling other anti-addiction interfaces. Otherwise, an exception will occur.
  
 The Appkey used in the parameter is issued when the game is registered in the background of yodo1. Please contact the operator for details.
 ```objectivec
@@ -496,13 +496,13 @@ The Appkey used in the parameter is issued when the game is registered in the ba
   Parameter 1：Appkey issued by Yodo1
   Parameter 2：Delegate that receives the callback from the anti-addiction system 
 */
-- (void)init:(NSString *)appKey delegate: (id<Yodo1AntiIndulgedDelegate>)delegate;
+- (void)init:(NSString *)appKey delegate: (id<Yodo1AntiAddictionDelegate>)delegate;
 
-#pragma mark - Yodo1AntiIndulgedDelegate
+#pragma mark - Yodo1AntiAddictionDelegate
 - (void)onInitFinish:(BOOL)result message:(NSString *)message {
 }
 
-- (BOOL)onTimeLimitNotify:(Yodo1AntiIndulgedEvent *)event title:(NSString *)title message:(NSString *)message {
+- (BOOL)onTimeLimitNotify:(Yodo1AntiAddictionEvent *)event title:(NSString *)title message:(NSString *)message {
     NSLog(@"游戏通知 - %@", message);
     return NO;
 }
@@ -519,20 +519,20 @@ Players must have a network connection before they can pass the real-name verif
 /// player's accountId 
 /// successful real-name authentication callbacks 
 /// failed real-name authentication callbacks 
-- (void)verifyCertificationInfo:(NSString *)accountId success:(Yodo1AntiIndulgedSuccessful)success failure:(Yodo1AntiIndulgedFailure)failure;
+- (void)verifyCertificationInfo:(NSString *)accountId success:(Yodo1AntiAddictionSuccessful)success failure:(Yodo1AntiAddictionFailure)failure;
 
-#pragma mark - Yodo1AntiIndulgedSuccessful
-typedef BOOL (^Yodo1AntiIndulgedSuccessful)(id _Nullable);
+#pragma mark - Yodo1AntiAddictionSuccessful
+typedef BOOL (^Yodo1AntiAddictionSuccessful)(id _Nullable);
 
-#pragma mark - Yodo1AntiIndulgedFailure
-typedef BOOL (^Yodo1AntiIndulgedFailure)(NSError * _Nonnull);
+#pragma mark - Yodo1AntiAddictionFailure
+typedef BOOL (^Yodo1AntiAddictionFailure)(NSError * _Nonnull);
 ```
 
 
 #### Play time limit (mandatory)
 After a player passes real-name verification and is authenticated as a minor (or enters the game through the trial button),Yodo1 anti-addiction system will limit the player's play time.
 This function is automatically run by Yodo1 anti-addiction SDK, and no additional access is required.
-The developer only needs to pay attention to the onTimeLimitNotify callback method in the Yodo1AntiIndulgedDelegate agent passed in during initialization. The SDK uses this method to inform the developer what to do.
+The developer only needs to pay attention to the onTimeLimitNotify callback method in the Yodo1AntiAddictionDelegate agent passed in during initialization. The SDK uses this method to inform the developer what to do.
 This method is described as follows:
 ```objectivec
 /// Verify the player's real name information
@@ -540,42 +540,42 @@ This method is described as follows:
 /// notification entity that games needs to display  
 /// notification title  that games needs to display
 /// notification content that games needs to display
-- (BOOL)onTimeLimitNotify:(Yodo1AntiIndulgedEvent *)event title:(NSString *)title message:(NSString *)message;
+- (BOOL)onTimeLimitNotify:(Yodo1AntiAddictionEvent *)event title:(NSString *)title message:(NSString *)message;
 
-#pragma mark - Yodo1AntiIndulgedEvent
-@interface Yodo1AntiIndulgedEvent : NSObject
-@property (nonatomic, assign) Yodo1AntiIndulgedEventCode eventCode;
-@property (nonatomic, assign) Yodo1AntiIndulgedAction action;
+#pragma mark - Yodo1AntiAddictionEvent
+@interface Yodo1AntiAddictionEvent : NSObject
+@property (nonatomic, assign) Yodo1AntiAddictionEventCode eventCode;
+@property (nonatomic, assign) Yodo1AntiAddictionAction action;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *content;
 @end
 
-#pragma mark - Yodo1AntiIndulgedAction
+#pragma mark - Yodo1AntiAddictionAction
 typedef enum: NSInteger {
-    Yodo1AntiIndulgedActionResumeGame = 0,
-    Yodo1AntiIndulgedActionEndGame = 1
-} Yodo1AntiIndulgedAction;
+    Yodo1AntiAddictionActionResumeGame = 0,
+    Yodo1AntiAddictionActionEndGame = 1
+} Yodo1AntiAddictionAction;
 
-#pragma mark - Yodo1AntiIndulgedEventCode
+#pragma mark - Yodo1AntiAddictionEventCode
 typedef enum: NSInteger {
-    Yodo1AntiIndulgedEventCodeNone = 0,
+    Yodo1AntiAddictionEventCodeNone = 0,
     /**
      *Notification of playtime - Minors
      */
-    Yodo1AntiIndulgedEventCodeMinorPlayedTime = 11001,
+    Yodo1AntiAddictionEventCodeMinorPlayedTime = 11001,
     /**
      *Notification of playtime ban - Minors
      */
-    Yodo1AntiIndulgedEventCodeMinorForbiddenTime = 12001,
+    Yodo1AntiAddictionEventCodeMinorForbiddenTime = 12001,
     /**
      * Notification of playtime - Guests
      */
-    Yodo1AntiIndulgedEventCodeGuestPlayedTime = 11011,
+    Yodo1AntiAddictionEventCodeGuestPlayedTime = 11011,
     /**
      * Notification of playtime ban - Guests
      */
-    Yodo1AntiIndulgedEventCodeGuestForbiddenTime = 12011
-} Yodo1AntiIndulgedEventCode;
+    Yodo1AntiAddictionEventCodeGuestForbiddenTime = 12011
+} Yodo1AntiAddictionEventCode;
 ```
 
 
@@ -586,7 +586,7 @@ When a player makes a purchase, the user needs to call the payment interface to 
 /// The price of the item the player wants to buy,  Unit:分
 /// a successful consumption verification callback  
 /// a failed consumption verification callback 
-- (void)verifyPurchase:(NSInteger)money success:(Yodo1AntiIndulgedSuccessful)success failure:(Yodo1AntiIndulgedFailure)failure;
+- (void)verifyPurchase:(NSInteger)money success:(Yodo1AntiAddictionSuccessful)success failure:(Yodo1AntiAddictionFailure)failure;
 ```
 Finally, after the game is purchased successfully and the product has been distributed to the player, the developer needs to call the reporting interface to notify the SDK to record the player's expenses this time:
 ```objectivec
@@ -594,13 +594,13 @@ Finally, after the game is purchased successfully and the product has been distr
 /// receipt and merchandise information section
 /// a successful report for consumption  callback 
 /// a failed report for consumption callback 
-- (void)reportProductReceipt:(Yodo1AntiIndulgedProductReceipt *)receipt success:(Yodo1AntiIndulgedSuccessful)success failure:(Yodo1AntiIndulgedFailure)failure;
+- (void)reportProductReceipt:(Yodo1AntiAddictionProductReceipt *)receipt success:(Yodo1AntiAddictionSuccessful)success failure:(Yodo1AntiAddictionFailure)failure;
 
 //Receipt and Merchandise Information section
-@interface Yodo1AntiIndulgedProductReceipt : NSObject
+@interface Yodo1AntiAddictionProductReceipt : NSObject
 @property (nonatomic, retain) NSString *orderId; // order no.
 @property (nonatomic, retain) NSString *itemCode; // product id
-@property (nonatomic, assign) Yodo1AntiIndulgedProductType itemType; // product type
+@property (nonatomic, assign) Yodo1AntiAddictionProductType itemType; // product type
 @property (nonatomic, assign) NSInteger money; // money   Unit:cents
 @property (nonatomic, retain) NSString *region; // region
 @property (nonatomic, retain) NSString *spendDate; // when to spend
