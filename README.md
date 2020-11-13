@@ -29,11 +29,13 @@ We have made plug-in packages on various platforms for all kinds of developers
 ### Unity Plugin
 **Current version:**
 <br />
-0.9.2<br />
+0.9.3
+<br />
 
 **Cocoapods version:**
 <br />
-2.0.2<br />
+0.9.3
+<br />
 
 
 **Supports Unity 3D:**
