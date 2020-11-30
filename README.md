@@ -191,7 +191,7 @@ Yodo1U3dAntiAddiction.SetTimeLimitNotifyCallBack((Yodo1U3dEventAction action, st
     }
 });
 ```
-
+#### Payment limit
 
 Game payment amount limit
 Due to restrictions, minor users will not be able to continuously  purchase in-game items when the payment amount in the game reaches a certain limit.
@@ -201,7 +201,6 @@ In this case, developers need to determine whether the user has been restricted 
 At the same time, developers have to call the SDK's amount reporting interface to record the user's cumulative payment amount during each payment.
 
 
-#### Check limits
 ```csharp
 /// <summary>
 /// Whether the callback of consumption has been restricted(是否已限制消费的回调).
