@@ -29,12 +29,12 @@ We have made plug-in packages on various platforms for all kinds of developers
 ### Unity Plugin
 **Current version:**
 <br />
-0.9.3
+3.1.2
 <br />
 
 **Cocoapods version:**
 <br />
-0.9.3
+1.0.5
 <br />
 
 
@@ -48,9 +48,9 @@ and newer versions
 
 **Download plugin:**
 <br />
-Copy this code below and paste into commandline to get the latest build `0.9.2`
+Copy this code below and paste into commandline to get the latest build `3.1.2`
 ```bash
-curl -L "https://yodo1-generic.pkg.coding.net/anti-indulged-system-SDK/unity-plugin/Yodo1AntiAddictionSDK?version=0.9.2" -o Yodo1AntiAddictionSDK-0.9.2.unitypackage
+curl -L "https://bj-ali-opp-sdk-update.oss-cn-beijing.aliyuncs.com/Yodo1SdkUnityPlugin_AntiIndulged/Yodo1AntiIndulgedSDK_3.1.2.unitypackage" 
 ```
 
 
