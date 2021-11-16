@@ -50,8 +50,7 @@ and newer versions
 <br />
 Copy this code below and paste into commandline to get the latest build 
 ```bash
-curl -L "https://bj-ali-opp-sdk-update.oss-cn-beijing.aliyuncs.com/Yodo1SdkUnityPlugin_AntiIndulged/Yodo1AntiIndulgedSDK_3.1.2.unitypackage" 
-" -o Yodo1AntiAddictionSDK-3.1.2.unitypackage
+https://bj-ali-opp-sdk-update.oss-cn-beijing.aliyuncs.com/Yodo1SdkUnityPlugin_AntiIndulged/Yodo1AntiIndulgedSDK_3.1.2.unitypackage
 ```
 
 
