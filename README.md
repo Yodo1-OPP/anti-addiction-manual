@@ -117,7 +117,8 @@ Users can enter the game and begin to experience the game content only after pa
 public void OnClickStartGameButton()
 {
     // real name authentication.
-    Yodo1U3dAntiAddiction.VerifyCertificationInfo(accountIdInputFiled.text, (Yodo1U3dEventAction eventAction) => {
+    //the accountID you can use Yodo1U3dUtils.getDeviceId() to get it.
+    Yodo1U3dAntiAddiction.VerifyCertificationInfo(accountId, (Yodo1U3dEventAction eventAction) => {
         Debug.LogFormat("action = {0}", eventAction);
         bool isGuestUser = false;
         if (eventAction == Yodo1U3dEventAction.ResumeGame)
@@ -134,7 +135,7 @@ public void OnClickStartGameButton()
             Dialog.ShowMsgDialog("Warm prompt", "Real name authentication failed!", true, () => {
                 Application.Quit();
             });
-
+           //Or you can use the game’s own UI and logic 
         }
     });
 }
@@ -188,6 +189,7 @@ Yodo1U3dAntiAddiction.SetTimeLimitNotifyCallBack((Yodo1U3dEventAction action, st
         Dialog.ShowMsgDialog(title, content, true, ()=> {
             Application.Quit();
         });
+         //Or you can use the game’s own UI and logic 
     }
 });
 ```
@@ -217,7 +219,7 @@ public delegate void VerifyPurchaseDelegate(bool isAllow, string content);
 /// Verify whether consumption is restricted, using cent RMB interface.
 /// </summary>
 /// <param name="priceCent">The price of the commodity, in cent(商品的价格，单位为分).</param>
-/// <param name="currency">Corresponding currency symbol(对应货币符号，从产品信息里取).</param>
+/// <param name="currency">Corresponding currency symbol ,you can get from Yodo1U3dProductData.Currency(对应货币符号，从产品信息里取).</param>
 Yodo1U3dAntiAddiction.VerifyPurchase(priceCent, currency,  (bool isAllow, string context) => {
     Debug.LogFormat("hasLimit = {0}, context = {1}", isAllow, context);
     if (isAllow)
@@ -237,7 +239,7 @@ Yodo1U3dAntiAddiction.VerifyPurchase(priceCent, currency,  (bool isAllow, string
 /// Verify whether consumption is restricted. RMB yuan interface.
 /// </summary>
 /// <param name="priceYuan">The price of the commodity, in yuan(商品的价格，单位为元).</param>
-/// <param name="currency">Corresponding currency symbol(对应货币符号,商品信息里获得).</param>
+/// <param name="currency">Corresponding currency symbol,you can get from Yodo1U3dProductData.Currency(对应货币符号,商品信息里获得).</param>
 public static void VerifyPurchaseYuan(priceYuan, currency,  (bool isAllow, string context) => {
     Debug.LogFormat("hasLimit = {0}, context = {1}", isAllow, context);
     if (isAllow)
