@@ -1,4 +1,4 @@
-# Anti-addiction 2.0 integration manual
+# Anti-addiction 3.0 integration manual
 
 ## ****Plug-in introduction****
 At present, all of the developers who want to enter the China mobile market to release games have to abide by the relevant policies of the Chinese government on the protection of minors:
