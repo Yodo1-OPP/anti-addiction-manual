@@ -479,7 +479,7 @@ If the game has been connected to the anti-addiction service of Yodo1SDK before,
 #### Project configuration
 Anti-addiction 3.0 is integrated with cocoapods. The profile example is as follows:
 ```ruby
-platform :ios, '9.0'
+platform :ios, '10.0'
 source 'https://github.com/Yodo1Games/Yodo1Spec.git'
 source 'https://github.com/Yodo1Sdk/Yodo1Spec.git'
 source 'https://github.com/CocoaPods/Specs.git'
