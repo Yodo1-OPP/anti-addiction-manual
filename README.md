@@ -485,7 +485,7 @@ source 'https://github.com/Yodo1Sdk/Yodo1Spec.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 target 'yodo1-anti-indulged-ios' do
-    pod 'Yodo1AntiAddiction', '1.0.6'
+    pod 'Yodo1AntiAddiction', '6.0.2'
 end
 
 ```
